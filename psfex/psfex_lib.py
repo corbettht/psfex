@@ -1,4 +1,4 @@
-import fitsio
+import astropy.io.fits as afits
 import numpy
 from . import _psfex_pywrap
 
@@ -78,13 +78,13 @@ class PSFEx(dict):
             The extension from which to read
         """
 
-        if isinstance(arg, fitsio.FITS):
+        if isinstance(arg, afits.HDUList):
             self._load_from_fits(arg, **kw)
         else:
             self['filename'] = arg
-            with fitsio.FITS(arg) as fits:
+            with afits.open(arg) as fits:
                 self._load_from_fits(fits, **kw)
- 
+
     def _load_from_fits(self, fits, ext=DEFAULT_EXT):
 
         hdu = fits[ext]
@@ -111,7 +111,7 @@ class PSFEx(dict):
         self['masksize'] = numpy.zeros(MASK_DIM, dtype=LONG_DTYPE)
         for i in range(MASK_DIM):
             self['masksize'][i] = h['psfaxis%1d' % (i+1)]
-        
+
         self['contextoffset'] = numpy.zeros(POLY_DIM,dtype=DOUBLE_DTYPE)
         self['contextscale'] = numpy.zeros(POLY_DIM,dtype=DOUBLE_DTYPE)
         for i in range(POLY_DIM):
@@ -128,5 +128,3 @@ class PSFEx(dict):
                                           self['contextscale'],
                                           self['psf_samp'],
                                           self._psf_mask)
- 
-       
