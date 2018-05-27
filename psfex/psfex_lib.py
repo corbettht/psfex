@@ -89,7 +89,7 @@ class PSFEx(dict):
 
         hdu = fits[ext]
 
-        psf_mask=hdu['psf_mask'][:]
+        psf_mask=hdu['psf_mask'].data
 
         psf_mask=numpy.array(psf_mask, dtype=DOUBLE_DTYPE)
 
