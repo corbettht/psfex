@@ -93,7 +93,7 @@ class PSFEx(dict):
 
         psf_mask=numpy.array(psf_mask, dtype=DOUBLE_DTYPE)
 
-        h=hdu.read_header()
+        h=hdu.header
 
         self._psf_mask=psf_mask
 
